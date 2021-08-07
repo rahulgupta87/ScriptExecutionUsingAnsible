@@ -1,7 +1,0 @@
-[linux]
-srvlinuxtest01 ansible_connection=ssh ansible_host=10.10.1.1 ansible_port=22 ansible_user=root hostname=srvlinuxtest01
-srvlinuxtest02 ansible_connection=ssh ansible_host=10.10.1.2 ansible_port=22 ansible_user=root hostname=srvlinuxtest02
-
-[windows]
-srvwinprod01 ansible_connection=winrm ansible_host=10.100.1.1 ansible_port=5986 ansible_user=test_user ansible_password=XXXX hostname=srvwinprod01 ansible_winrm_server_cert_validation=ignore
-srvwinprod02 ansible_connection=winrm ansible_host=10.100.1.2 ansible_port=5986 ansible_user=test_user ansible_password=XXXX hostname=srvwinprod02 ansible_winrm_server_cert_validation=ignore

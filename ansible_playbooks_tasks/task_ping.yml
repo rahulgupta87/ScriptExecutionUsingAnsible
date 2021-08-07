@@ -1,7 +1,0 @@
-  - name: Check ping connection for linux servers
-  ping:
-  when: system_type -= "linux"
-
-- name: Check ping connection for windows servers
-  win_ping:
-  when: system_type == "windows"
