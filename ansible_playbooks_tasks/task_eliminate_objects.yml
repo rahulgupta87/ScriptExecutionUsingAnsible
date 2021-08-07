@@ -1,0 +1,55 @@
+- name: Find reports generated for linux servers on the hosts
+  find:
+    paths: /tmp
+    patterns: '*.mef3'
+  register: find_results_linux
+  when: system_type == "linux"
+  
+- name: Eliminate generated reports for linux servers on the hosts
+  file: path='{{ item.path }}' state=absent
+  loop: "{{ find_results_linux.files }}"
+  when: system_type == "linux"
+
+
+
+- name: Find reports generated for windows servers on the hosts
+  win_find:
+    paths: C:\Ansible_Artifacts
+    patterns: [ '*.mef3' ]
+  register: find_results_windows
+  when: system_type == "windows"
+  
+- name: Eliminate generated reports for windows servrs on the hosts
+  win_file:
+    path: '{{ item.path }}'
+    state: absent
+  loop: "{{ find_results_windows.files }}"
+  when: system_type == "windows"
+
+
+
+- name: Eliminating original linux scripts from the hosts
+  file: path='{{ item }}' state=absent
+  with_items:
+  - /tmp/extract_linux_user_info.sh
+  when: system_type == "linux"
+
+- name: Eliminating original windows scripts from the hosts
+  win_file:
+    path: C:\Ansible_Artifacts\extract_win_user_info.exe
+    state: absent
+  when: system_type == "windows"
+  
+
+
+- name: Find reports copied in the controller
+  find:
+    paths: /cygdrive/d/Ansible/repository_results/{{ system_type }}
+    patterns: '*.mef3'
+  register: find_reports
+  delegate_to: localhost
+  
+- name: Eliminate reports from the controller
+  file: path='{{ item.path }}' state=absent
+  loop: "{{ find_reports.files }}"
+  delegate_to: localhost

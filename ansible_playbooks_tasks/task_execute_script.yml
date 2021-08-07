@@ -1,0 +1,7 @@
+- name: Executing the script for linux servers
+  command: sh /tmp/extract_linux_user_info.sh
+  when: system_type == "linux"
+  
+- name: Executing the script for windows servers
+  win_shell: C:\Ansible_Artifacts\extract_win_user_info.exe
+  when: system_type == "windows"

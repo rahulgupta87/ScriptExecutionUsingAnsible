@@ -1,0 +1,29 @@
+  - name: Find reports generated after execution of script on linux servers
+  find:
+    paths: /tmp
+    patterns: '*.mef3'
+  register: find_results_linux
+  when: system_type == "linux"
+  
+- name: Retrieve report generated on linux servers to the controller
+  fetch:
+    src: '{{ item.path }}'
+    dest: /cygdrive/d/Ansible/repository_results/linux/
+    flat: yes
+  loop: "{{ find_results_linux.files }}"
+  when: system_type == "linux"
+
+- name: Find reports generated after execution of script on windows servers
+  win_find:
+    paths: C:\Ansible_Artifacts
+    patterns: [ '*.mef3' ]
+  register: find_results_windows
+  when: system_type == "windows"
+      
+- name: Retrieve report generated on windows servers to the controller
+  fetch: 
+    src: '{{ item.path }}'
+    dest: /cygdrive/d/Ansible/repository_results/windows/
+    flat: yes
+  loop: "{{ find_results_windows.files }}"
+  when: system_type == "windows"
